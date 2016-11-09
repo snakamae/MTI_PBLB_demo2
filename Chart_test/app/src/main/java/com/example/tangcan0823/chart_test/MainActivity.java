@@ -14,7 +14,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -62,6 +65,8 @@ public class MainActivity extends Activity {
             NUM.add(list.get(i)[1]);
         }
 
+        removeDuplicateWithOrder(TIME);
+        removeDuplicateWithOrder(NUM);
 
 
         ArrayList<LineDataSet> allLinesList = new ArrayList<LineDataSet>();
@@ -72,11 +77,28 @@ public class MainActivity extends Activity {
 
         LineDataSet dataSet1 = new LineDataSet(entryList,"周りの人数");
         dataSet1.setLineWidth(2.5f);
-        dataSet1.setCircleSize(4.5f);
+        dataSet1.setCircleSize(3.5f);
         dataSet1.setHighLightColor(Color.RED);
-        dataSet1.setDrawValues(false);
+       // dataSet1.setDrawCubic(true);
+        dataSet1.setDrawValues(true);
+
+
+        ArrayList<Entry> entryList2 = new ArrayList<Entry>();
+        for (int i = 0; i <TIME.size() ; i++) {
+            entryList2.add(new Entry(1,i));
+        }
+
+        LineDataSet dataSet2 = new LineDataSet(entryList2,"１人の時");
+        dataSet2.setColor(Color.RED);
+        dataSet2.setLineWidth(2.5f);
+        dataSet2.setDrawValues(false);
+        dataSet2.setDrawCircles(false);
+
+
+
 
         allLinesList.add(dataSet1);
+        allLinesList.add(dataSet2);
 
 
         LineData mChartData = new LineData(TIME,allLinesList);
@@ -125,5 +147,19 @@ public class MainActivity extends Activity {
 //        rightAxis.setLabelCount(5);
 //        rightAxis.setDrawGridLines(false);
     }
+
+    public static void removeDuplicateWithOrder(ArrayList arlList)
+    {
+        Set set = new HashSet();
+        List newList = new ArrayList();
+        for (Iterator iter = arlList.iterator(); iter.hasNext(); ) {
+            Object element = iter.next();
+            if (set.add(element))
+                newList.add(element);
+        }
+        arlList.clear();
+        arlList.addAll(newList);
+    }
+
 
 }

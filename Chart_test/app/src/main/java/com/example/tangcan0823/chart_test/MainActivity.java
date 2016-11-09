@@ -65,8 +65,6 @@ public class MainActivity extends Activity {
             NUM.add(list.get(i)[1]);
         }
 
-        removeDuplicateWithOrder(TIME);
-        removeDuplicateWithOrder(NUM);
 
 
         ArrayList<LineDataSet> allLinesList = new ArrayList<LineDataSet>();
@@ -144,10 +142,11 @@ public class MainActivity extends Activity {
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
 //        rightAxis.setTypeface(mTf);
-//        rightAxis.setLabelCount(5);
+//          rightAxis.setLabelCount(5);
 //        rightAxis.setDrawGridLines(false);
     }
 
+    //ユニーク関数
     public static void removeDuplicateWithOrder(ArrayList arlList)
     {
         Set set = new HashSet();
@@ -160,6 +159,64 @@ public class MainActivity extends Activity {
         arlList.clear();
         arlList.addAll(newList);
     }
+
+    //リスト最大値を取る
+    public double ArrayListMax(ArrayList sampleList)
+    {
+        try
+        {
+            double maxDevation = 0.0;
+            int totalCount = sampleList.size();
+            if (totalCount >= 1)
+            {
+
+                double max = Double.parseDouble(sampleList.get(0).toString());
+                for (int i = 0; i < totalCount; i++)
+                {
+                    double temp = Double.parseDouble(sampleList.get(i).toString());
+                    if (temp > max)
+                    {
+                        max = temp;
+                    }
+                } maxDevation = max;
+            }
+            return maxDevation;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    //リスト最小値を取る
+    public double ArrayListMin(ArrayList sampleList)
+    {
+        try
+        {
+            double mixDevation = 0.0;
+            int totalCount = sampleList.size();
+            if (totalCount >= 1)
+            {
+                double min = Double.parseDouble(sampleList.get(0).toString());
+                for (int i = 0; i < totalCount; i++)
+                {
+                    double temp = Double.parseDouble(sampleList.get(i).toString());
+                    if (min > temp)
+                    {
+                        min = temp;
+                    }
+                } mixDevation = min;
+            }
+            return mixDevation;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+
 
 
 }

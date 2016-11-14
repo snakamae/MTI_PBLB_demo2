@@ -1,8 +1,13 @@
 package com.example.tangcan0823.chart_test;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,21 +27,39 @@ import java.util.Set;
 import au.com.bytecode.opencsv.CSVReader;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("MTI");
+        setSupportActionBar(mToolbar);
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mNavigationView.inflateHeaderView(R.layout.navigation_header);
+        mTextView = (TextView) findViewById(R.id.item_tv1);
+
 
         //Linechart
         LineChart mLineChart = (LineChart) findViewById(R.id.line_chart);
         setLineChart(mLineChart);
         loadLineChartData(mLineChart);
+
     }
-
-
 
 
 
@@ -65,6 +88,13 @@ public class MainActivity extends Activity {
             NUM.add(list.get(i)[1]);
         }
 
+        for (int i = 0; i < list.size(); i++){
+            if (Integer.parseInt(NUM.get(i)) == 1){
+               mTextView.append(TIME.get(i)+"  ");
+            }
+
+        }
+
 
 
         ArrayList<LineDataSet> allLinesList = new ArrayList<LineDataSet>();
@@ -76,9 +106,12 @@ public class MainActivity extends Activity {
         LineDataSet dataSet1 = new LineDataSet(entryList,"周りの人数");
         dataSet1.setLineWidth(2.5f);
         dataSet1.setCircleSize(3.5f);
-        dataSet1.setHighLightColor(Color.RED);
-       // dataSet1.setDrawCubic(true);
-        dataSet1.setDrawValues(true);
+        dataSet1.setDrawFilled(true);
+        dataSet1.setFillColor(Color.parseColor("#455A64"));
+        dataSet1.setColor(Color.parseColor("#b3b5bb"));
+        dataSet1.setCircleColor(Color.parseColor("#ffc755"));
+        dataSet1.setDrawCircleHole(false);
+        dataSet1.setDrawValues(false);
 
 
         ArrayList<Entry> entryList2 = new ArrayList<Entry>();
@@ -96,7 +129,7 @@ public class MainActivity extends Activity {
 
 
         allLinesList.add(dataSet1);
-        allLinesList.add(dataSet2);
+      //  allLinesList.add(dataSet2);
 
 
         LineData mChartData = new LineData(TIME,allLinesList);
@@ -129,18 +162,24 @@ public class MainActivity extends Activity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 //        xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextColor(Color.parseColor("#6a84c3"));
+
 
         //Get left Axis
         YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setDrawAxisLine(false);
 //        leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(5);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setTextColor(Color.parseColor("#6a84c3"));
 //        leftAxis.setAxisLineWidth(1.5f);
 
         //Set right Axis
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
+        rightAxis.setDrawGridLines(false);
 //        rightAxis.setTypeface(mTf);
 //          rightAxis.setLabelCount(5);
 //        rightAxis.setDrawGridLines(false);

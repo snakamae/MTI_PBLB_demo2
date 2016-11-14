@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".navi_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_hitori"
+            android:icon="@drawable/hitori"
+            android:title="@string/navigation_hirori" />
+        <item
+            android:id="@+id/navigation_item_tomo"
+            android:icon="@drawable/tomo"
+            android:title="@string/navigation_tomo" />
+    </group>
+</menu>

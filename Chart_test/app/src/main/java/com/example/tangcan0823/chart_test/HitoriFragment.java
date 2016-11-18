@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,7 +49,7 @@ public class HitoriFragment extends Fragment {
         String[] next ;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("data.csv")));
+            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("sample1.csv")));
             while((next = reader.readNext()) != null){
                 list.add(next);
             }
@@ -57,17 +59,27 @@ public class HitoriFragment extends Fragment {
 
         ArrayList<String> TIME = new ArrayList<String>();
         ArrayList<String>  NUM = new ArrayList<String>();
+        ArrayList<String>  start = new ArrayList<String>();
+        ArrayList<String>  end = new ArrayList<String>();
         for (int i = 0; i < list.size(); i++) {
             TIME.add(list.get(i)[0]);
             NUM.add(list.get(i)[1]);
         }
 
-        for (int i = 0; i < list.size(); i++){
-            if (Integer.parseInt(NUM.get(i)) == 1){
-                mTextView.append(TIME.get(i)+"  ");
+        for (int i = 1; i < TIME.size()-1; i++) {
+            if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i - 1)) != 0) {
+                start.add(TIME.get(i));
+            } else if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i + 1)) != 0) {
+                end.add(TIME.get(i));
+            }
+        }
+
+
+        for (int i = 0; i < start.size(); i++){
+                mTextView.append("今日の"+start.get(i)+"から"+end.get(i)+"までは一人でしたよ\n");
             }
 
-        }
+
 
 
 
@@ -110,6 +122,8 @@ public class HitoriFragment extends Fragment {
 
         // set data
         chart.setData((LineData) mChartData);
+        Legend legend = chart.getLegend();
+        legend.setTextColor(Color.parseColor("#6a84c3"));
         chart.animateX(1500);
 
 
@@ -120,6 +134,7 @@ public class HitoriFragment extends Fragment {
         chart.setDescription("");
         chart.setDrawGridBackground(false);
         chart.setScaleEnabled(true);
+        chart.setScaleYEnabled(false);
         chart.setDoubleTapToZoomEnabled(false);
 
         //set x Axis
@@ -131,13 +146,20 @@ public class HitoriFragment extends Fragment {
         xAxis.setTextColor(Color.parseColor("#6a84c3"));
 
 
+
         //Get left Axis
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setDrawAxisLine(false);
 //        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(4);
+        leftAxis.setLabelCount(2);
         leftAxis.setDrawGridLines(false);
         leftAxis.setTextColor(Color.parseColor("#6a84c3"));
+        leftAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf((int) Math.floor(value));
+            }
+        });
 //        leftAxis.setAxisLineWidth(1.5f);
 
         //Set right Axis

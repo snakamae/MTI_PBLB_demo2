@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MTI_LineChart</string>
+    <string name="navigation_hirori">子供</string>
+    <string name="navigation_tomo">友達</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+
 </resources>

@@ -1,129 +1,99 @@
 package com.example.tangcan0823.chart_test;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import au.com.bytecode.opencsv.CSVReader;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Linechart
-        LineChart mLineChart = (LineChart) findViewById(R.id.line_chart);
-        setLineChart(mLineChart);
-        loadLineChartData(mLineChart);
-    }
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("MTI");
+        setSupportActionBar(mToolbar);
 
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        setupDrawerContent(mNavigationView);
 
+        setUpProfileImage();
+        switchTohitori();
 
-
-    /**
-     * Set data for Linechart
-     * @param chart
-     */
-    private void loadLineChartData(LineChart chart){
-
-
-        String[] next ;
-        List<String[]> list = new ArrayList<String[]>();
-        try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getAssets().open("data.csv")));
-            while((next = reader.readNext()) != null){
-                list.add(next);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        ArrayList<String> TIME = new ArrayList<String>();
-        ArrayList<String>  NUM = new ArrayList<String>();
-        for (int i = 0; i < list.size(); i++) {
-            TIME.add(list.get(i)[0]);
-            NUM.add(list.get(i)[1]);
-        }
-
-
-
-        ArrayList<LineDataSet> allLinesList = new ArrayList<LineDataSet>();
-        ArrayList<Entry> entryList = new ArrayList<Entry>();
-        for(int i=0;i<list.size();i++){
-            entryList.add(new Entry(Integer.parseInt(NUM.get(i)),i));
-        }
-
-        LineDataSet dataSet1 = new LineDataSet(entryList,"周りの人数");
-        dataSet1.setLineWidth(2.5f);
-        dataSet1.setCircleSize(4.5f);
-        dataSet1.setHighLightColor(Color.RED);
-        dataSet1.setDrawValues(false);
-
-        allLinesList.add(dataSet1);
-
-
-        LineData mChartData = new LineData(TIME,allLinesList);
-
-        // set data
-        chart.setData((LineData) mChartData);
-        chart.animateX(1500);
-
-
-
-
-
-
+    private void switchTohitori() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new HitoriFragment()).commit();
+        mToolbar.setTitle("子供");
+    }
+    private void switchTotomo() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new TomoFragment()).commit();
+        mToolbar.setTitle("友達");
     }
 
+    private void switchToShuta() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShutaFragment()).commit();
+        mToolbar.setTitle("Shuta");
+    }
 
-    /**
-     * Set style for Linechart
-     * @param chart
-     */
-    private void setLineChart(LineChart chart) {
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
 
-        chart.setDescription("");
-        chart.setDrawGridBackground(false);
-        chart.setScaleEnabled(true);
-        chart.setDoubleTapToZoomEnabled(false);
+                            case R.id.navigation_item_hitori:
+                                switchTohitori();
+                                break;
 
-        //set x Axis
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(true);
+                            case R.id.navigation_item_tomo:
+                                switchTotomo();
+                                break;
 
-        //Get left Axis
-        YAxis leftAxis = chart.getAxisLeft();
-//        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(5);
-//        leftAxis.setAxisLineWidth(1.5f);
+                            case R.id.navigation_item_shuta:
+                                switchToShuta();
+                                break;
 
-        //Set right Axis
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setDrawAxisLine(false);
-        rightAxis.setDrawLabels(false);
-//        rightAxis.setTypeface(mTf);
-//        rightAxis.setLabelCount(5);
-//        rightAxis.setDrawGridLines(false);
+                        }
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
+    }
+
+    private void setUpProfileImage() {
+        View headerView = mNavigationView.inflateHeaderView(R.layout.navigation_header);
+        View profileView = headerView.findViewById(R.id.profile_image);
+        if (profileView != null) {
+            profileView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switchTohitori();
+                    mToolbar.setTitle("MTI");
+                    mDrawerLayout.closeDrawers();
+                }
+            });
+        }
+
     }
 
 }

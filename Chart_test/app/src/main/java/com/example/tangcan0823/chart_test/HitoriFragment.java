@@ -76,7 +76,8 @@ public class HitoriFragment extends Fragment {
 
 
         for (int i = 0; i < start.size(); i++){
-                mTextView.append("今日の"+start.get(i)+"から"+end.get(i)+"までは一人でしたよ\n");
+                mTextView.append("今日の"+Integer.parseInt(start.get(i))/10000+"時"+(Integer.parseInt(start.get(i))%10000)/100+"分から"+
+                        Integer.parseInt(end.get(i))/10000+"時"+(Integer.parseInt(end.get(i))%10000)/100+"分までは一人でしたよ\n");
             }
 
 

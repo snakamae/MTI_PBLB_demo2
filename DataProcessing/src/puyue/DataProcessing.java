@@ -76,17 +76,17 @@ List<String> list_TIME = new ArrayList<String>();
  
 	int[][]  ALL = new int[array_TIME.length][array_ID.length+2];
 	
-	System.out.println("###表示数组高"+array_TIME.length);
-	System.out.println("###表示数组宽"+array_ID.length);
+	System.out.println("幅"+array_TIME.length);
+	System.out.println("横"+array_ID.length);
 
 	//ID
-	System.out.print("横坐标");
+	
 	for(int m=0;m<array_ID.length;m++){
 		System.out.print(array_ID[m]+" ");
 		}
 	System.out.println();
 	//TIME
-	System.out.print("竖坐标");
+	
 	for(int m=0;m<array_TIME.length;m++){
 		System.out.print(array_TIME[m]+" ");
 		}
@@ -103,7 +103,7 @@ List<String> list_TIME = new ArrayList<String>();
 				{
 					if((array_ID[y].equals(ID[q])))
 					{
-					System.out.println("所有配对情况"+"x="+x+"y="+y+"q="+q);
+					
 					ALL[x][y] = 1;
 					}
 				}

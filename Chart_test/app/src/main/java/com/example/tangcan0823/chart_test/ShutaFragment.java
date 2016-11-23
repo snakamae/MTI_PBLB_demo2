@@ -33,20 +33,15 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shuta, container, false);
 
-        new AsyncTask<Integer, Void, Void>() {
-            @Override
-            protected Void doInBackground(Integer... params) {
-                try {
-                    executeRemoteCommand("sit-user-16", "2016mti", "130.158.80.37", 22);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute(1);
 
-        Button btn = (Button) view.findViewById(R.id.send_data);
-        btn.setOnClickListener(this);
+
+        Button btnconneect=(Button) view.findViewById(R.id.connect_data);
+        btnconneect.setOnClickListener(this);
+        Button btnsend = (Button) view.findViewById(R.id.send_data);
+        btnsend.setOnClickListener(this);
+        Button btnget = (Button) view.findViewById(R.id.get_data);
+        btnget.setOnClickListener(this);
+
         return view;
     }
 
@@ -111,58 +106,76 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
         return "0";
     }
 
+    public void connect(){
+        new AsyncTask<Integer, Void, Void>() {
+            @Override
+            protected Void doInBackground(Integer... params) {
+                try {
+                    executeRemoteCommand("sit-user-16", "2016mti", "130.158.80.37", 22);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute(1);
+    }
+
+
     @Override
     public void onClick(View v) {
-        Channel channel = null;
         switch (v.getId()) {
             case R.id.send_data: {
                 try {
-                    channel = session.openChannel("sftp");
+                    sendData();
                 } catch (JSchException e) {
                     e.printStackTrace();
-                }
-                try {
-                    channel.connect();
-                } catch (JSchException e) {
-                    e.printStackTrace();
-                }
-                ChannelSftp sftpChannel = (ChannelSftp) channel;
-
-                try {
-                    sftpChannel.put("/sdcard/11111111.csv", "/var/www/box");
                 } catch (SftpException e) {
                     e.printStackTrace();
                 }
             }
             case R.id.get_data: {
                 try {
-                    channel = session.openChannel("sftp");
+                    getData();
                 } catch (JSchException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    channel.connect();
-                } catch (JSchException e) {
-                    e.printStackTrace();
-                }
-                ChannelSftp sftpChannel = (ChannelSftp) channel;
-                try (FileOutputStream out = new FileOutputStream("/sdcard/resulttest.csv")) {
-                    try (InputStream in = sftpChannel.get("resulttest.csv")) {
-                        // read from in, write to out
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, len);
-                        }
-                    } catch (SftpException e) {
-                        e.printStackTrace();
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            case R.id.connect_data:{
+                connect();
+            }
         }
     }
+
+    public void sendData() throws JSchException, SftpException {
+        Channel channel = session.openChannel("sftp");
+        channel.connect();
+        ChannelSftp sftpChannel = (ChannelSftp) channel;
+
+        sftpChannel.put("/sdcard/11111111.csv", "/var/www/box");
+  //      session.disconnect();
+    }
+    public void getData() throws JSchException {
+        Channel channel = session.openChannel("sftp");
+        channel.connect();
+        ChannelSftp sftpChannel = (ChannelSftp) channel;
+        try (FileOutputStream out = new FileOutputStream("/sdcard/resulttest.csv")) {
+            try (InputStream in = sftpChannel.get("resulttest.csv")) {
+                // read from in, write to out
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, len);
+                }
+            } catch (SftpException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sftpChannel.exit();
+//        session.disconnect();
+    }
+
 }

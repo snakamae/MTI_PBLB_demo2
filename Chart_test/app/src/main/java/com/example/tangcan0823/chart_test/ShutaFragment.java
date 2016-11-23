@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -34,20 +35,18 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_shuta, container, false);
 
 
-
         Button btnconneect=(Button) view.findViewById(R.id.connect_data);
         btnconneect.setOnClickListener(this);
         Button btnsend = (Button) view.findViewById(R.id.send_data);
         btnsend.setOnClickListener(this);
         Button btnget = (Button) view.findViewById(R.id.get_data);
         btnget.setOnClickListener(this);
-
         return view;
     }
 
     public static Session session;
 
-    public static String executeRemoteCommand(String username, String password, String hostname, int port)
+    public String executeRemoteCommand(String username, String password, String hostname, int port)
             throws Exception {
         JSch jsch = new JSch();
         session = jsch.getSession(username, hostname, port);
@@ -59,7 +58,7 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
         session.setConfig(prop);
 
         session.connect();
-
+        //toast("CANT CONNECT");
 
 //----------------------コマンド
         // SSH Channel
@@ -142,6 +141,7 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.connect_data:{
                 connect();
+                toast("CONNETED");
             }
         }
     }
@@ -176,6 +176,10 @@ public class ShutaFragment extends Fragment implements View.OnClickListener {
         }
         sftpChannel.exit();
 //        session.disconnect();
+    }
+
+    public void toast(String message){
+        Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }
 
 }

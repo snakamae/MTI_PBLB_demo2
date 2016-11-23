@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -177,11 +176,9 @@ public class HitoriFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ListView listView1 = (ListView) parent;
-                int p = listView1.getCheckedItemPosition();
-                switch(p){
+
+                switch(position){
                     case 0:
-                        Toast.makeText(getActivity().getApplicationContext(),"hahaha",Toast.LENGTH_LONG).show();
                         CSV = "data.csv";
                         loadLineChartData(mLineChart);
                         break;

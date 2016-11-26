@@ -44,7 +44,7 @@ public class HitoriFragment extends Fragment {
         mTextView = (TextView)view.findViewById(R.id.item_tv1);
         listView = (ListView) view.findViewById(R.id.listview);
         mLineChart = (LineChart)view.findViewById(R.id.line_chart);
-        CSV = "sample1.csv";
+        CSV = "result_add.csv";
         setLineChart(mLineChart);
         loadLineChartData(mLineChart);
         SetList();
@@ -84,10 +84,9 @@ public class HitoriFragment extends Fragment {
             }
         }
 
-
+                mTextView.setText("");
         for (int i = 0; i < start.size(); i++){
-                mTextView.append("今日の"+Integer.parseInt(start.get(i))/10000+"時"+(Integer.parseInt(start.get(i))%10000)/100+"分から"+
-                        Integer.parseInt(end.get(i))/10000+"時"+(Integer.parseInt(end.get(i))%10000)/100+"分までは一人でしたよ\n");
+                mTextView.append("今日の"+start.get(i)+"から"+end.get(i)+"までは一人でしたよ\n");
             }
 
 
@@ -129,6 +128,7 @@ public class HitoriFragment extends Fragment {
         chart.setScaleEnabled(true);
         chart.setScaleYEnabled(false);
         chart.setDoubleTapToZoomEnabled(false);
+        chart.setDragEnabled(true);
 
         //set x Axis
         XAxis xAxis = chart.getXAxis();
@@ -179,17 +179,19 @@ public class HitoriFragment extends Fragment {
 
                 switch(position){
                     case 0:
-                        CSV = "data.csv";
+                        CSV = "result_add.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 1:
-                        CSV = "sample.csv";
+                        CSV = "result_change.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 2:
+                        CSV = "sample1.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 3:
+                        CSV = "result.csv";
                         loadLineChartData(mLineChart);
                         break;
                 }

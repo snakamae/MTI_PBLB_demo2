@@ -12,161 +12,222 @@ public class DataProcessing {
 
 public static void main(String [] args) throws IOException {  
 
-		List<String> list_TIME0 = new ArrayList<String>();
-		 List<String> list_ID0 = new ArrayList<String>();
-		 int MARK=0;
-		 try {
-	 
-     
-       FileReader fr = new FileReader("C://Users/PU YUE/Desktop/in.csv");
-       BufferedReader br = new BufferedReader(fr);
+	//导入数据
+			List<String> list_TIME0 = new ArrayList<String>();
+			 List<String> list_ID0 = new ArrayList<String>();
+			 int MARK=0;
+			 try {
 
-       
-       String line;
-       StringTokenizer token;
-       while ((line = br.readLine()) != null) {
+	     FileReader fr = new FileReader("C://Users/PU YUE/Desktop/in.csv");
+	     BufferedReader br = new BufferedReader(fr);
 
-           token = new StringTokenizer(line, ",");
+	     String line;
+	     StringTokenizer token;
+	     while ((line = br.readLine()) != null) {
+	         token = new StringTokenizer(line, ",");
+	         while (token.hasMoreTokens()) {         
+	             list_ID0.add(token.nextToken());         
+	             list_TIME0.add(token.nextToken());
+	         }       
+	     }
+	     br.close();
 
-           while (token.hasMoreTokens()) {
-              
-               list_ID0.add(token.nextToken());
-               
-               list_TIME0.add(token.nextToken());
-           }
-          
-       }
-       br.close();
-
-   } catch (IOException ex) {
-     
-   	   ex.printStackTrace();
-   }
-		 
- 
-		
-		 int size_TIME0=list_TIME0.size(); 
-		 String[] TIME = (String[])list_TIME0.toArray(new String[size_TIME0]); 
-		 int size_ID0=list_ID0.size(); 
-		 String[] ID = (String[])list_ID0.toArray(new String[size_ID0]); 
-		 
-
-
-List<String> list_TIME = new ArrayList<String>(); 
- for (int ii=0; ii<TIME.length; ii++) {  
-     if(!list_TIME.contains(TIME[ii])) {  
-         list_TIME.add(TIME[ii]);  
-     }  
- }  
-
- int size_TIME=list_TIME.size(); 
- String[] array_TIME = (String[])list_TIME.toArray(new String[size_TIME]);  
-
-
-     List<String> list_ID = new ArrayList<String>(); 
-     for (int iii=0; iii<ID.length; iii++) {  
-         if(!list_ID.contains(ID[iii])) {  
-             list_ID.add(ID[iii]);  
-         }  
-     }    
-
-     int size_ID=list_ID.size(); 
-     String[] array_ID = (String[])list_ID.toArray(new String[size_ID]);  
-     
- 
-	int[][]  ALL = new int[array_TIME.length][array_ID.length+2];
-	
-	System.out.println("幅"+array_TIME.length);
-	System.out.println("横"+array_ID.length);
-
-	//ID
-	
-	for(int m=0;m<array_ID.length;m++){
-		System.out.print(array_ID[m]+" ");
-		}
-	System.out.println();
-	//TIME
-	
-	for(int m=0;m<array_TIME.length;m++){
-		System.out.print(array_TIME[m]+" ");
-		}
-	System.out.println();
-	//key in ALL
-	
-	for (int y = 0; y < array_ID.length; y++)
-	{
-		for (int x = 0; x < array_TIME.length; x++)
-		{
-			for (int q = 0; q < TIME.length; q++)
-			{
-				if (array_TIME[x].equals(TIME[q]))
-				{
-					if((array_ID[y].equals(ID[q])))
-					{
-					
-					ALL[x][y] = 1;
-					}
+	 } catch (IOException ex) {
+	   
+	 	   ex.printStackTrace();
+	 }
+			 
+			//time string 转成int	
+			 List<Integer> int_TIME0 = new ArrayList<Integer>();
+			 for(String str : list_TIME0) {
+				  int_TIME0.add(Integer.parseInt(str));
 				}
-				
-			}
-		}
-	}
-	
-	
-	ALL[0][array_ID.length+1]=00;
-	ALL[0][array_ID.length]=ALL[0][0]+ALL[0][1];
-	for(int i=1;i<ALL.length;i++){
-		ALL[i][array_ID.length]=ALL[i][1]+ALL[i][2];
-		ALL[i][array_ID.length+1]=Math.abs(ALL[i-1][1]-ALL[i][1])+Math.abs(ALL[i-1][2]-ALL[i][2]);
-		
-	}
-	
+			 
+			 //10分钟
+			 int a=0;
+			 List<Integer> int_TIME = new ArrayList<Integer>();
+			 for(int i=0;i<int_TIME0.size();i++){	
+				int_TIME.add(((int_TIME0.get(i)/600000)*600000)) ;
+			 } 
+			 
+			 //ID唯一化
+			 List<String> String_ID = new ArrayList<String>();//复制一份用来唯一化  元数据不变
 
-	for (int i = 0; i < ALL.length; i++)
-	{
-		for (int j = 0; j < ALL[0].length; j++)
-		{
+			 for (int i=0; i<list_ID0.size(); i++) {  
+			     if(!String_ID.contains(list_ID0.get(i))) {  
+			    	 String_ID.add(list_ID0.get(i));  
+			     }  
+			 }  
 			
-			System.out.print(ALL[i][j]+ "	");
-		}
-		
-		System.out.println();
+			 
+			 List<Integer> NUM = new ArrayList<Integer>();//计算每一个有数据的10分钟一共多少个数据
+			 int w=0;
+			 int n=0;
+			 for(int i = 0; i < int_TIME.size(); ){
+				 while((int_TIME.get(i)).equals(0+600000*n)){
+					 w++;
+					 i++;
+					 if(i==int_TIME.size()){break;}
+			}
+				 NUM.add(w);
+				 w=0;
+				 n++;
+			 }
+			 
+			 List<Integer> NUM_SUM = new ArrayList<Integer>();//前n项和，就是之后的位数
+			 NUM_SUM.add(0);//多加一位为了之后的n+1
+			 int sum=0;
+			 for(int i=0;i<NUM.size();i++){				
+					sum+=NUM.get(i);
+					NUM_SUM.add(sum);
+				}
 
-	}
-	
+			 
+			 for (int j = 0; j < NUM.size(); j++){System.out.print(NUM.get(j)+ " ");}
+			 System.out.println();
+			 for (int j = 0; j < NUM_SUM.size(); j++){System.out.print(NUM_SUM.get(j)+ " ");}
+			 System.out.println();
+			 
+			 for (int i = 0; i < int_TIME.size(); i++){
+				 System.out.print(list_ID0.get(i)+ " ");
+				 System.out.println(int_TIME.get(i)+ " ");
+			 }
+			 
+			 
+			 
+			 int m=0;
+			 int[][]  ALL = new int[int_TIME.size()][String_ID.size()];
+			 //写入
+			 for (int y = 0; y < int_TIME.size(); y++) 
+				{
+					for (int q = NUM_SUM.get(m); q < NUM_SUM.get(m+1); q++)
+					{
+						for (int x = 0; x < String_ID.size(); x++)
+						{
+							if(int_TIME.get(q).equals(0+600000*m)&&String_ID.get(x).equals(list_ID0.get(q))){
+									ALL[y][x] = 1;
+							}
+						}
+					}m++;
+				}
+			 
+			
+			 System.out.println("list_TIME0.size()"+list_TIME0.size());
+			 System.out.println("list_ID0.size()"+list_ID0.size());
+			 System.out.println("String_ID.size()"+String_ID.size());
+			 System.out.println("int_TIME.size()"+int_TIME.size());
+			 
+			 
+			//打印 ALL这个数组，
+				for (int i = 0; i < ALL.length; i++)//行数
+				{
+					for (int j = 0; j < ALL[0].length; j++)//列数
+					{
+						System.out.print(ALL[i][j]+ "	");
+					}
+					
+					System.out.println();
 
+				}
+				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+				
+				 int[][]  TIME_add = new int[int_TIME.size()][2];
+		    	 int nn=0;//第一列写上时间
+				 for(int i=0;i<int_TIME.size();i++){
+					 TIME_add[i][0]=0+600000*nn;
+					 nn++;
+				 }
+				 //功能
+				 for(int i=0;i<int_TIME.size();i++){
+					 for(int j=0;j<String_ID.size();j++){
+						 TIME_add[i][1]=ALL[i][j]+TIME_add[i][1];
+					 }
+				 }
+				//打印 TIME_add这个数组，
+					for (int i = 0; i < TIME_add.length; i++)//行数
+					{
+						for (int j = 0; j < TIME_add[0].length; j++)//列数
+						{
+							System.out.print(TIME_add[i][j]+ "	");
+						}
+						
+						System.out.println();
 
-	int i,j;
-	try
-    {
-      FileWriter writer = new FileWriter("C:/Users/PU YUE/Desktop/out.csv");   
-      
-         for(i = 0; i < ALL.length; )
-         {
-            for (j=0; j<ALL[0].length; j++)
-             {
-                 writer.append(String.valueOf(ALL[i][j]));
-                 writer.append(',');
-                 
-             }
-              
-            
-               writer.append('\n');
-               i++;
-               writer.flush();
-         }
-         writer.close();
-      }        
-    catch(Exception e)
-    {
-      e.printStackTrace();
-    }
-	
+					}
+					System.out.println("##########################");
+				 int[][]  TIME_change = new int[int_TIME.size()][2];
+				 int pp=0;//第一列写上时间
+				 for(int i=0;i<int_TIME.size();i++){
+					 TIME_change[i][0]=0+600000*pp;
+					 pp++;
+				 }
+				 //功能
+				TIME_change[0][1]=0;
+				 for(int i=1;i<int_TIME.size();i++){
+					 for(int j=0;j<String_ID.size();j++){
+						 TIME_change[i][1]=Math.abs(ALL[i-1][j]-ALL[i][j])+TIME_change[i][1];
+					 }
+				 }
+							 
+					//打印 TIME_change这个数组，
+					for (int i = 0; i < TIME_change.length; i++)//行数
+					{
+						for (int j = 0; j < TIME_change[0].length; j++)//列数
+						{
+							System.out.print(TIME_change[i][j]+ "	");
+						}
+						
+						System.out.println();
 
-}
-
-	private static int sqrt(int i) {
-		// TODO Auto-generated method stub
-		return 0;
+					}
+					//导出
+					int i,j;
+					try
+				    {
+				      FileWriter writer = new FileWriter("C:/Users/PU YUE/Desktop/TIME_add.csv");   
+				         for(i = 0; i < TIME_add.length; )
+				         {
+				            for (j=0; j<TIME_add[0].length; j++)
+				             {
+				                 writer.append(String.valueOf(TIME_add[i][j]));//int变成string才能保存csv
+				                 writer.append(',');
+				                 
+				             }
+				               writer.append('\n');
+				               i++;
+				               writer.flush();
+				         }
+				         writer.close();
+				      }        
+				    catch(Exception e)
+				    {
+				      e.printStackTrace();
+				    }
+					
+					//导出
+					try
+				    {
+				      FileWriter writer = new FileWriter("C:/Users/PU YUE/Desktop/TIME_change.csv");   
+				      
+				         for(i = 0; i <TIME_change.length; )
+				         {
+				            for (j=0; j<TIME_change[0].length; j++)
+				             {
+				                 writer.append(String.valueOf(TIME_change[i][j]));//int变成string才能保存csv
+				                 writer.append(',');
+				                 
+				             }
+				              
+				            
+				               writer.append('\n');
+				               i++;
+				               writer.flush();
+				         }
+				         writer.close();
+				      }        
+				    catch(Exception e)
+				    {
+				      e.printStackTrace();
+				    }
 	}
 }

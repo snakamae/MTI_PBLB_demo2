@@ -111,15 +111,6 @@ public class TomoFragment extends Fragment {
         }
 
 
-        for (int j = 0; j < NUM.size(); j++){System.out.print(NUM.get(j)+ " ");}
-        System.out.println();
-        for (int j = 0; j < NUM_SUM.size(); j++){System.out.print(NUM_SUM.get(j)+ " ");}
-        System.out.println();
-
-        for (int i = 0; i < int_TIME.size(); i++){
-            System.out.print(list_ID0.get(i)+ " ");
-            System.out.println(int_TIME.get(i)+ " ");
-        }
 
 
         int RR=int_TIME0.get(int_TIME0.size()-1)/600000+1;
@@ -152,24 +143,8 @@ public class TomoFragment extends Fragment {
         }
 
 
-        System.out.println("list_TIME0.size()"+list_TIME0.size());
-        System.out.println("list_ID0.size()"+list_ID0.size());
-        System.out.println("String_ID.size()"+String_ID.size());
-        System.out.println("int_TIME.size()"+int_TIME.size());
 
 
-        //print  ALL
-        for (int i = 0; i < ALL.length; i++)
-        {
-            for (int j = 0; j < ALL[0].length; j++)
-            {
-                System.out.print(ALL[i][j]+ "	");
-            }
-
-            System.out.println();
-
-        }
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
         int[][]  TIME_add = new int[RR][2];
         //第一列時間を書く
@@ -183,22 +158,10 @@ public class TomoFragment extends Fragment {
         for(int i=0;i<RR;i++){
             for(int j=0;j<String_ID.size();j++){
                 ss+=ALL[i][j];
-                System.out.print( "ss="+ss+ "	");
             }
             TIME_add[i][1]=ss;
         }
-        //print TIME_add
-        for (int i = 0; i < TIME_add.length; i++)
-        {
-            for (int j = 0; j < TIME_add[0].length; j++)
-            {
-                System.out.print(TIME_add[i][j]+ "	");
-            }
 
-            System.out.println();
-
-        }
-        System.out.println("##########################");
         int[][]  TIME_change = new int[RR][2];
         //第一列時間を書く
         int pp=0;
@@ -213,18 +176,7 @@ public class TomoFragment extends Fragment {
                 TIME_change[i][1]=Math.abs(ALL[i-1][j]-ALL[i][j])+TIME_change[i][1];
             }
         }
-
-        //print TIME_change
-        for (int i = 0; i < TIME_change.length; i++)
-        {
-            for (int j = 0; j < TIME_change[0].length; j++)
-            {
-                System.out.print(TIME_change[i][j]+ "	");
-            }
-
-            System.out.println();
-
-        }
+        
         //导出
         int i,j;
         try

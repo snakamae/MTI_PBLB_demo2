@@ -147,7 +147,7 @@ public class HitoriFragment extends Fragment {
         //Get left Axis
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setDrawAxisLine(false);
-        leftAxis.setLabelCount(2);
+        leftAxis.setLabelCount(3);
         leftAxis.setDrawGridLines(false);
         leftAxis.setTextColor(Color.parseColor("#6a84c3"));
         leftAxis.setValueFormatter(new ValueFormatter() {

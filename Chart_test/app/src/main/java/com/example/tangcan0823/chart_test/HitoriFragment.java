@@ -191,7 +191,7 @@ public class HitoriFragment extends Fragment {
                         loadLineChartData(mLineChart);
                         break;
                     case 3:
-                        CSV = "resulttest.csv";
+                        CSV = "bb4_result_add.csv";
                         loadLineChartData(mLineChart);
                         break;
                 }

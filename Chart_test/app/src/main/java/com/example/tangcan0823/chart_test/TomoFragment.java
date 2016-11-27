@@ -31,6 +31,7 @@ public class TomoFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataProcess();
             }
         });
         return view;
@@ -63,21 +64,22 @@ public class TomoFragment extends Fragment {
             ex.printStackTrace();
         }
 
-        //time string 转成int
+
+        //transform  list_TIME0 to int
         List<Integer> int_TIME0 = new ArrayList<Integer>();
         for(String str : list_TIME0) {
             int_TIME0.add(Integer.parseInt(str));
         }
 
-        //10分钟
+        //10分間化
         int a=0;
         List<Integer> int_TIME = new ArrayList<Integer>();
         for(int i=0;i<int_TIME0.size();i++){
             int_TIME.add(((int_TIME0.get(i)/600000)*600000)) ;
         }
 
-        //ID唯一化
-        List<String> String_ID = new ArrayList<String>();//复制一份用来唯一化  元数据不变
+        //list_ID0 unique
+        List<String> String_ID = new ArrayList<String>();//copy for　unique
 
         for (int i=0; i<list_ID0.size(); i++) {
             if(!String_ID.contains(list_ID0.get(i))) {
@@ -86,7 +88,7 @@ public class TomoFragment extends Fragment {
         }
 
 
-        List<Integer> NUM = new ArrayList<Integer>();//计算每一个有数据的10分钟一共多少个数据
+        List<Integer> NUM = new ArrayList<Integer>();//Calculate the total number of data for each 10 minutes of which has data
         int w=0;
         int n=0;
         for(int i = 0; i < int_TIME.size(); ){
@@ -100,8 +102,8 @@ public class TomoFragment extends Fragment {
             n++;
         }
 
-        List<Integer> NUM_SUM = new ArrayList<Integer>();//前n项和，就是之后的位数
-        NUM_SUM.add(0);//多加一位为了之后的n+1
+        List<Integer> NUM_SUM = new ArrayList<Integer>();//NUM 現在位置から先頭まで蓄積
+        NUM_SUM.add(0);
         int sum=0;
         for(int i=0;i<NUM.size();i++){
             sum+=NUM.get(i);
@@ -120,21 +122,33 @@ public class TomoFragment extends Fragment {
         }
 
 
-
+        int RR=int_TIME0.get(int_TIME0.size()-1)/600000+1;
         int m=0;
-        int[][]  ALL = new int[int_TIME.size()][String_ID.size()];
-        //写入
-        for (int y = 0; y < int_TIME.size(); y++)
-        {
-            for (int q = NUM_SUM.get(m); q < NUM_SUM.get(m+1); q++)
+        int[][]  ALL = new int[RR][String_ID.size()];
+        //put data in ALL
+        for (int y = 0; y < RR; y++) {
             {
-                for (int x = 0; x < String_ID.size(); x++)
-                {
-                    if(int_TIME.get(q).equals(0+600000*m)&&String_ID.get(x).equals(list_ID0.get(q))){
-                        ALL[y][x] = 1;
+                if(NUM_SUM.size()>=2){
+                    for (int q = NUM_SUM.get(m); q < NUM_SUM.get(m+1); q++)
+                    {
+                        for (int x = 0; x < String_ID.size(); x++)
+                        {
+                            if(int_TIME.get(q).equals(0+600000*m)&&String_ID.get(x).equals(list_ID0.get(q))){
+                                ALL[y][x] = 1;
+                            }
+                        }
                     }
+                    m++;
+                }else{
+                    for(int p=0;p<NUM_SUM.get(0);p++){
+                        for (int x = 0; x < String_ID.size(); x++)
+                        {
+                            if(int_TIME.get(p).equals(0+600000*m)&&String_ID.get(x).equals(list_ID0.get(p))){
+                                ALL[y][x] = 1;
+                            }
+                        }}
                 }
-            }m++;
+            }
         }
 
 
@@ -144,10 +158,10 @@ public class TomoFragment extends Fragment {
         System.out.println("int_TIME.size()"+int_TIME.size());
 
 
-        //打印 ALL这个数组，
-        for (int i = 0; i < ALL.length; i++)//行数
+        //print  ALL
+        for (int i = 0; i < ALL.length; i++)
         {
-            for (int j = 0; j < ALL[0].length; j++)//列数
+            for (int j = 0; j < ALL[0].length; j++)
             {
                 System.out.print(ALL[i][j]+ "	");
             }
@@ -157,22 +171,26 @@ public class TomoFragment extends Fragment {
         }
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
-        int[][]  TIME_add = new int[int_TIME.size()][2];
-        int nn=0;//第一列写上时间
-        for(int i=0;i<int_TIME.size();i++){
+        int[][]  TIME_add = new int[RR][2];
+        //第一列時間を書く
+        int nn=0;
+        for(int i=0;i<RR;i++){
             TIME_add[i][0]=0+600000*nn;
             nn++;
         }
-        //功能
-        for(int i=0;i<int_TIME.size();i++){
+        //第2列
+        int ss=0;
+        for(int i=0;i<RR;i++){
             for(int j=0;j<String_ID.size();j++){
-                TIME_add[i][1]=ALL[i][j]+TIME_add[i][1];
+                ss+=ALL[i][j];
+                System.out.print( "ss="+ss+ "	");
             }
+            TIME_add[i][1]=ss;
         }
-        //打印 TIME_add这个数组，
-        for (int i = 0; i < TIME_add.length; i++)//行数
+        //print TIME_add
+        for (int i = 0; i < TIME_add.length; i++)
         {
-            for (int j = 0; j < TIME_add[0].length; j++)//列数
+            for (int j = 0; j < TIME_add[0].length; j++)
             {
                 System.out.print(TIME_add[i][j]+ "	");
             }
@@ -181,24 +199,25 @@ public class TomoFragment extends Fragment {
 
         }
         System.out.println("##########################");
-        int[][]  TIME_change = new int[int_TIME.size()][2];
-        int pp=0;//第一列写上时间
-        for(int i=0;i<int_TIME.size();i++){
+        int[][]  TIME_change = new int[RR][2];
+        //第一列時間を書く
+        int pp=0;
+        for(int i=0;i<RR;i++){
             TIME_change[i][0]=0+600000*pp;
             pp++;
         }
-        //功能
+        //第2列
         TIME_change[0][1]=0;
-        for(int i=1;i<int_TIME.size();i++){
+        for(int i=1;i<RR;i++){
             for(int j=0;j<String_ID.size();j++){
                 TIME_change[i][1]=Math.abs(ALL[i-1][j]-ALL[i][j])+TIME_change[i][1];
             }
         }
 
-        //打印 TIME_change这个数组，
-        for (int i = 0; i < TIME_change.length; i++)//行数
+        //print TIME_change
+        for (int i = 0; i < TIME_change.length; i++)
         {
-            for (int j = 0; j < TIME_change[0].length; j++)//列数
+            for (int j = 0; j < TIME_change[0].length; j++)
             {
                 System.out.print(TIME_change[i][j]+ "	");
             }
@@ -215,7 +234,7 @@ public class TomoFragment extends Fragment {
             {
                 for (j=0; j<TIME_add[0].length; j++)
                 {
-                    writer.append(String.valueOf(TIME_add[i][j]));//int变成string才能保存csv
+                    writer.append(String.valueOf(TIME_add[i][j]));
                     writer.append(',');
 
                 }
@@ -239,7 +258,7 @@ public class TomoFragment extends Fragment {
             {
                 for (j=0; j<TIME_change[0].length; j++)
                 {
-                    writer.append(String.valueOf(TIME_change[i][j]));//int变成string才能保存csv
+                    writer.append(String.valueOf(TIME_change[i][j]));
                     writer.append(',');
 
                 }

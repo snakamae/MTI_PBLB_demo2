@@ -43,7 +43,7 @@ public static void main(String [] args) throws IOException {
 				  int_TIME0.add(Integer.parseInt(str));
 				}
 			 
-			 //10分化
+			 //10分間化
 			 int a=0;
 			 List<Integer> int_TIME = new ArrayList<Integer>();
 			 for(int i=0;i<int_TIME0.size();i++){	
@@ -51,7 +51,7 @@ public static void main(String [] args) throws IOException {
 			 } 
 			 
 			 //list_ID0 unique
-			 List<String> String_ID = new ArrayList<String>();//复制一份用来唯一化  元数据不变
+			 List<String> String_ID = new ArrayList<String>();//copy for　unique
 
 			 for (int i=0; i<list_ID0.size(); i++) {  
 			     if(!String_ID.contains(list_ID0.get(i))) {  
@@ -60,7 +60,7 @@ public static void main(String [] args) throws IOException {
 			 }  
 			
 			 
-			 List<Integer> NUM = new ArrayList<Integer>();//计算每一个有数据的10分钟一共多少个数据
+			 List<Integer> NUM = new ArrayList<Integer>();//Calculate the total number of data for each 10 minutes of which has data
 			 int w=0;
 			 int n=0;
 			 for(int i = 0; i < int_TIME.size(); ){
@@ -74,8 +74,8 @@ public static void main(String [] args) throws IOException {
 				 n++;
 			 }
 			 
-			 List<Integer> NUM_SUM = new ArrayList<Integer>();//前n项和，就是之后的位数
-			 NUM_SUM.add(0);//多加一位为了之后的n+1
+			 List<Integer> NUM_SUM = new ArrayList<Integer>();//NUM 現在位置から先頭まで蓄積
+			 NUM_SUM.add(0);
 			 int sum=0;
 			 for(int i=0;i<NUM.size();i++){				
 					sum+=NUM.get(i);
@@ -119,9 +119,9 @@ public static void main(String [] args) throws IOException {
 			 
 			 
 			//print  ALL
-				for (int i = 0; i < ALL.length; i++)//行数
+				for (int i = 0; i < ALL.length; i++)
 				{
-					for (int j = 0; j < ALL[0].length; j++)//列数
+					for (int j = 0; j < ALL[0].length; j++)
 					{
 						System.out.print(ALL[i][j]+ "	");
 					}
@@ -145,9 +145,9 @@ public static void main(String [] args) throws IOException {
 					 }
 				 }
 				//print TIME_add
-					for (int i = 0; i < TIME_add.length; i++)//行数
+					for (int i = 0; i < TIME_add.length; i++)
 					{
-						for (int j = 0; j < TIME_add[0].length; j++)//列数
+						for (int j = 0; j < TIME_add[0].length; j++)
 						{
 							System.out.print(TIME_add[i][j]+ "	");
 						}
@@ -172,9 +172,9 @@ public static void main(String [] args) throws IOException {
 				 }
 							 
 					//print TIME_change
-					for (int i = 0; i < TIME_change.length; i++)//行数
+					for (int i = 0; i < TIME_change.length; i++)
 					{
-						for (int j = 0; j < TIME_change[0].length; j++)//列数
+						for (int j = 0; j < TIME_change[0].length; j++)
 						{
 							System.out.print(TIME_change[i][j]+ "	");
 						}

@@ -3,4 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+    <Button android:layout_height="61.8dp"
+            android:layout_width="100dp"
+            android:id="@+id/button1"
+            android:text="データ処理">
+    </Button>
+
+
 </LinearLayout>

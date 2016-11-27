@@ -2,6 +2,7 @@ package com.example.tangcan0823.chart_test;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ValueFormatter;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -37,14 +40,16 @@ public class HitoriFragment extends Fragment {
     private ListView listView;
     private LineChart mLineChart;
     private String CSV;
+    private String sdPath = Environment.getExternalStorageDirectory().getPath();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hitori, null);
+
         mTextView = (TextView)view.findViewById(R.id.item_tv1);
         listView = (ListView) view.findViewById(R.id.listview);
         mLineChart = (LineChart)view.findViewById(R.id.line_chart);
-        CSV = "result_add.csv";
+        CSV = "sample1.csv";
         setLineChart(mLineChart);
         loadLineChartData(mLineChart);
         SetList();
@@ -59,7 +64,7 @@ public class HitoriFragment extends Fragment {
         String[] next ;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open(CSV)));
+            CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(new File(sdPath + "/" + CSV))));
             while((next = reader.readNext()) != null){
                 list.add(next);
             }
@@ -179,11 +184,11 @@ public class HitoriFragment extends Fragment {
 
                 switch(position){
                     case 0:
-                        CSV = "result_add.csv";
+                        CSV = "sample.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 1:
-                        CSV = "result_change.csv";
+                        CSV = "data.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 2:

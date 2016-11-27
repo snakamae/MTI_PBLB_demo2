@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primary_light">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0.25" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send Data"
-        android:id="@+id/send_data" />
+        android:id="@+id/send_data"
+        android:layout_weight="1"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@color/primary"
+        android:elevation="0dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_weight="0.25"
+        android:layout_height="1dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Command"
+        android:id="@+id/command_button"
+        android:layout_weight="1"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@color/primary" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0.25" />
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GET DATA"
-        android:id="@+id/get_data" />
+        android:id="@+id/get_data"
+        android:layout_weight="1"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@color/primary" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0.25" />
+
 </LinearLayout>

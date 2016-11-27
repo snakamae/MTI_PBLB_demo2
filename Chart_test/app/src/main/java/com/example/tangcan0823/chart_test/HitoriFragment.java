@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -31,14 +34,21 @@ import au.com.bytecode.opencsv.CSVReader;
 public class HitoriFragment extends Fragment {
 
     private TextView mTextView;
+    private ListView listView;
+    private LineChart mLineChart;
+    private String CSV;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hitori, null);
         mTextView = (TextView)view.findViewById(R.id.item_tv1);
-        LineChart mLineChart = (LineChart)view.findViewById(R.id.line_chart);
+        listView = (ListView) view.findViewById(R.id.listview);
+        mLineChart = (LineChart)view.findViewById(R.id.line_chart);
+        CSV = "result_add.csv";
         setLineChart(mLineChart);
         loadLineChartData(mLineChart);
+        SetList();
+        SetListitemlisten();
         return view;
     }
 
@@ -49,7 +59,7 @@ public class HitoriFragment extends Fragment {
         String[] next ;
         List<String[]> list = new ArrayList<String[]>();
         try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open("sample1.csv")));
+            CSVReader reader = new CSVReader(new InputStreamReader(getActivity().getAssets().open(CSV)));
             while((next = reader.readNext()) != null){
                 list.add(next);
             }
@@ -74,7 +84,7 @@ public class HitoriFragment extends Fragment {
             }
         }
 
-
+                mTextView.setText("");
         for (int i = 0; i < start.size(); i++){
                 mTextView.append("今日の"+start.get(i)+"から"+end.get(i)+"までは一人でしたよ\n");
             }
@@ -98,24 +108,7 @@ public class HitoriFragment extends Fragment {
         dataSet1.setCircleColor(Color.parseColor("#ffc755"));
         dataSet1.setDrawCircleHole(false);
         dataSet1.setDrawValues(false);
-
-
-        ArrayList<Entry> entryList2 = new ArrayList<Entry>();
-        for (int i = 0; i <TIME.size() ; i++) {
-            entryList2.add(new Entry(1,i));
-        }
-
-        LineDataSet dataSet2 = new LineDataSet(entryList2,"１人の時");
-        dataSet2.setColor(Color.RED);
-        dataSet2.setLineWidth(2.5f);
-        dataSet2.setDrawValues(false);
-        dataSet2.setDrawCircles(false);
-
-
-
-
         allLinesList.add(dataSet1);
-        //  allLinesList.add(dataSet2);
 
 
         LineData mChartData = new LineData(TIME,allLinesList);
@@ -126,7 +119,6 @@ public class HitoriFragment extends Fragment {
         legend.setTextColor(Color.parseColor("#6a84c3"));
         chart.animateX(1500);
 
-
     }
 
     private void setLineChart(LineChart chart) {
@@ -136,6 +128,7 @@ public class HitoriFragment extends Fragment {
         chart.setScaleEnabled(true);
         chart.setScaleYEnabled(false);
         chart.setDoubleTapToZoomEnabled(false);
+        chart.setDragEnabled(true);
 
         //set x Axis
         XAxis xAxis = chart.getXAxis();
@@ -170,6 +163,41 @@ public class HitoriFragment extends Fragment {
 //        rightAxis.setTypeface(mTf);
 //          rightAxis.setLabelCount(5);
 //        rightAxis.setDrawGridLines(false);
+    }
+
+    private void SetList(){
+        String[] csv = {"csv1","csv2","csv3","csv4"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,csv);
+        listView.setAdapter(adapter);
+
+    }
+
+    private void SetListitemlisten(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                switch(position){
+                    case 0:
+                        CSV = "result_add.csv";
+                        loadLineChartData(mLineChart);
+                        break;
+                    case 1:
+                        CSV = "result_change.csv";
+                        loadLineChartData(mLineChart);
+                        break;
+                    case 2:
+                        CSV = "sample1.csv";
+                        loadLineChartData(mLineChart);
+                        break;
+                    case 3:
+                        CSV = "result.csv";
+                        loadLineChartData(mLineChart);
+                        break;
+                }
+            }
+        });
+
     }
 
 

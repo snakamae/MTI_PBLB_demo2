@@ -12,7 +12,7 @@ public class DataProcessing {
 
 public static void main(String [] args) throws IOException {  
 
-	//导入数据
+	//put data in
 			List<String> list_TIME0 = new ArrayList<String>();
 			 List<String> list_ID0 = new ArrayList<String>();
 			 int MARK=0;
@@ -37,20 +37,20 @@ public static void main(String [] args) throws IOException {
 	 	   ex.printStackTrace();
 	 }
 			 
-			//time string 转成int	
+			//transform  list_TIME0 to int	
 			 List<Integer> int_TIME0 = new ArrayList<Integer>();
 			 for(String str : list_TIME0) {
 				  int_TIME0.add(Integer.parseInt(str));
 				}
 			 
-			 //10分钟
+			 //10分化
 			 int a=0;
 			 List<Integer> int_TIME = new ArrayList<Integer>();
 			 for(int i=0;i<int_TIME0.size();i++){	
 				int_TIME.add(((int_TIME0.get(i)/600000)*600000)) ;
 			 } 
 			 
-			 //ID唯一化
+			 //list_ID0 unique
 			 List<String> String_ID = new ArrayList<String>();//复制一份用来唯一化  元数据不变
 
 			 for (int i=0; i<list_ID0.size(); i++) {  
@@ -97,7 +97,7 @@ public static void main(String [] args) throws IOException {
 			 
 			 int m=0;
 			 int[][]  ALL = new int[int_TIME.size()][String_ID.size()];
-			 //写入
+			 //put data in ALL
 			 for (int y = 0; y < int_TIME.size(); y++) 
 				{
 					for (int q = NUM_SUM.get(m); q < NUM_SUM.get(m+1); q++)
@@ -118,7 +118,7 @@ public static void main(String [] args) throws IOException {
 			 System.out.println("int_TIME.size()"+int_TIME.size());
 			 
 			 
-			//打印 ALL这个数组，
+			//print  ALL
 				for (int i = 0; i < ALL.length; i++)//行数
 				{
 					for (int j = 0; j < ALL[0].length; j++)//列数
@@ -132,18 +132,19 @@ public static void main(String [] args) throws IOException {
 				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 				
 				 int[][]  TIME_add = new int[int_TIME.size()][2];
-		    	 int nn=0;//第一列写上时间
+				//第一列時間を書く
+				 int nn=0;
 				 for(int i=0;i<int_TIME.size();i++){
 					 TIME_add[i][0]=0+600000*nn;
 					 nn++;
 				 }
-				 //功能
+				 //第2列
 				 for(int i=0;i<int_TIME.size();i++){
 					 for(int j=0;j<String_ID.size();j++){
 						 TIME_add[i][1]=ALL[i][j]+TIME_add[i][1];
 					 }
 				 }
-				//打印 TIME_add这个数组，
+				//print TIME_add
 					for (int i = 0; i < TIME_add.length; i++)//行数
 					{
 						for (int j = 0; j < TIME_add[0].length; j++)//列数
@@ -156,12 +157,13 @@ public static void main(String [] args) throws IOException {
 					}
 					System.out.println("##########################");
 				 int[][]  TIME_change = new int[int_TIME.size()][2];
-				 int pp=0;//第一列写上时间
+				//第一列時間を書く
+				 int pp=0;
 				 for(int i=0;i<int_TIME.size();i++){
 					 TIME_change[i][0]=0+600000*pp;
 					 pp++;
 				 }
-				 //功能
+				//第2列
 				TIME_change[0][1]=0;
 				 for(int i=1;i<int_TIME.size();i++){
 					 for(int j=0;j<String_ID.size();j++){
@@ -169,7 +171,7 @@ public static void main(String [] args) throws IOException {
 					 }
 				 }
 							 
-					//打印 TIME_change这个数组，
+					//print TIME_change
 					for (int i = 0; i < TIME_change.length; i++)//行数
 					{
 						for (int j = 0; j < TIME_change[0].length; j++)//列数
@@ -180,7 +182,7 @@ public static void main(String [] args) throws IOException {
 						System.out.println();
 
 					}
-					//导出
+					//csv file「TIME_add.csv」 を作って、dataをいれます
 					int i,j;
 					try
 				    {
@@ -189,7 +191,7 @@ public static void main(String [] args) throws IOException {
 				         {
 				            for (j=0; j<TIME_add[0].length; j++)
 				             {
-				                 writer.append(String.valueOf(TIME_add[i][j]));//int变成string才能保存csv
+				                 writer.append(String.valueOf(TIME_add[i][j]));
 				                 writer.append(',');
 				                 
 				             }
@@ -204,7 +206,7 @@ public static void main(String [] args) throws IOException {
 				      e.printStackTrace();
 				    }
 					
-					//导出
+					//csv file「TIME_change.csv」 を作って、dataをいれます
 					try
 				    {
 				      FileWriter writer = new FileWriter("C:/Users/PU YUE/Desktop/TIME_change.csv");   
@@ -213,7 +215,7 @@ public static void main(String [] args) throws IOException {
 				         {
 				            for (j=0; j<TIME_change[0].length; j++)
 				             {
-				                 writer.append(String.valueOf(TIME_change[i][j]));//int变成string才能保存csv
+				                 writer.append(String.valueOf(TIME_change[i][j]));
 				                 writer.append(',');
 				                 
 				             }

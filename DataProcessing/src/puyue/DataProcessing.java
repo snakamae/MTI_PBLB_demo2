@@ -12,7 +12,7 @@ public class DataProcessing {
 
 public static void main(String [] args) throws IOException {  
 
-	//put data in
+	        //put data in
 			List<String> list_TIME0 = new ArrayList<String>();
 			 List<String> list_ID0 = new ArrayList<String>();
 			 int MARK=0;

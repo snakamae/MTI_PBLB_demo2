@@ -55,7 +55,7 @@ public class DataFragment extends Fragment implements View.OnClickListener {
                 return null;
             }
         }.execute(1);
-        toast("CONNETED");
+        toast("サーバーと接続しました");
 
         return view;
     }

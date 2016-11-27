@@ -55,6 +55,8 @@
                     android:layout_height="match_parent"
                     android:layout_width="match_parent">
 
+
+
                     <TextView
                         android:id="@+id/item_tv"
                         android:text="一人いる時間帯"
@@ -67,15 +69,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                    <android.support.v4.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/item_tv">
+
+
                     <TextView
                         android:id="@+id/item_tv1"
                         android:textSize="18sp"
-                        android:layout_below="@+id/item_tv"
-                        android:paddingLeft="16dp"
+                        android:paddingLeft="8dp"
                         android:paddingTop="10dp"
                         android:textColor="@color/light_grey"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+
+                    </android.support.v4.widget.NestedScrollView>
 
 
                 </RelativeLayout>

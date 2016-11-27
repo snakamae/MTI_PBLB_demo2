@@ -42,7 +42,7 @@ public class DataFragment extends Fragment implements View.OnClickListener {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    view = inflater.inflate(R.layout.fragment_shuta, container, false);
+    view = inflater.inflate(R.layout.fragment_data, container, false);
 
 
        /* Button btnconneect=(Button) view.findViewById(R.id.connect_data);

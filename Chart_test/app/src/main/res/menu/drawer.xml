@@ -12,8 +12,8 @@
             android:icon="@drawable/tomo"
             android:title="@string/navigation_tomo" />
         <item
-            android:id="@+id/navigation_item_shuta"
+            android:id="@+id/navigation_item_data"
             android:icon="@drawable/data"
-            android:title="@string/navigation_shuta" />
+            android:title="@string/navigation_data" />
     </group>
 </menu>

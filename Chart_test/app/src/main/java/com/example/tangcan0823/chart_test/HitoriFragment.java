@@ -49,7 +49,7 @@ public class HitoriFragment extends Fragment {
         mTextView = (TextView)view.findViewById(R.id.item_tv1);
         listView = (ListView) view.findViewById(R.id.listview);
         mLineChart = (LineChart)view.findViewById(R.id.line_chart);
-        CSV = "sample1.csv";
+        CSV = "csv1.csv";
         setLineChart(mLineChart);
         loadLineChartData(mLineChart);
         SetList();
@@ -138,7 +138,6 @@ public class HitoriFragment extends Fragment {
         //set x Axis
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setTypeface(mTf);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextColor(Color.parseColor("#6a84c3"));
@@ -148,7 +147,6 @@ public class HitoriFragment extends Fragment {
         //Get left Axis
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setDrawAxisLine(false);
-//        leftAxis.setTypeface(mTf);
         leftAxis.setLabelCount(2);
         leftAxis.setDrawGridLines(false);
         leftAxis.setTextColor(Color.parseColor("#6a84c3"));
@@ -158,16 +156,13 @@ public class HitoriFragment extends Fragment {
                 return String.valueOf((int) Math.floor(value));
             }
         });
-//        leftAxis.setAxisLineWidth(1.5f);
+
 
         //Set right Axis
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setDrawAxisLine(false);
         rightAxis.setDrawLabels(false);
         rightAxis.setDrawGridLines(false);
-//        rightAxis.setTypeface(mTf);
-//          rightAxis.setLabelCount(5);
-//        rightAxis.setDrawGridLines(false);
     }
 
     private void SetList(){
@@ -184,15 +179,15 @@ public class HitoriFragment extends Fragment {
 
                 switch(position){
                     case 0:
-                        CSV = "sample.csv";
+                        CSV = "csv1.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 1:
-                        CSV = "data.csv";
+                        CSV = "csv2.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 2:
-                        CSV = "sample1.csv";
+                        CSV = "csv3.csv";
                         loadLineChartData(mLineChart);
                         break;
                     case 3:

@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
-                R.string.drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -49,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setTitle("友達");
     }
 
-    private void switchToShuta() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShutaFragment()).commit();
+    private void switchToData() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new DataFragment()).commit();
         mToolbar.setTitle("データ");
     }
 
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
                                 switchTotomo();
                                 break;
 
-                            case R.id.navigation_item_shuta:
-                                switchToShuta();
+                            case R.id.navigation_item_data:
+                                switchToData();
                                 break;
 
                         }
@@ -96,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 }

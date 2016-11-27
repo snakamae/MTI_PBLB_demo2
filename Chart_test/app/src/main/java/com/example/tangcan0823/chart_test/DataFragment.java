@@ -35,28 +35,17 @@ import java.util.Properties;
  */
 public class DataFragment extends Fragment implements View.OnClickListener {
     public View view;
-    public WebView myWebView;
-    public Button btnsend, btnget, btncommand;
+    public Button btnsend, btnget;
+    public int counter=0;
     @Nullable
     @Override
-
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     view = inflater.inflate(R.layout.fragment_data, container, false);
 
-
-       /* Button btnconneect=(Button) view.findViewById(R.id.connect_data);
-        btnconneect.setOnClickListener(this);
-       */ btnsend = (Button) view.findViewById(R.id.send_data);
+        btnsend = (Button) view.findViewById(R.id.send_data);
         btnsend.setOnClickListener(this);
         btnget = (Button) view.findViewById(R.id.get_data);
         btnget.setOnClickListener(this);
-        btncommand = (Button) view.findViewById(R.id.command_button);
-        btncommand.setOnClickListener(this);
-
-      /*  myWebView = (WebView) view.findViewById(R.id.web_view);
-        myWebView.setWebViewClient(new WebViewClient());
-        myWebView.loadUrl("http://www.google.com");*/
 
         new AsyncTask<Integer, Void, Void>() {
             @Override
@@ -86,52 +75,7 @@ public class DataFragment extends Fragment implements View.OnClickListener {
         Properties prop = new Properties();
         prop.put("StrictHostKeyChecking", "no");
         session.setConfig(prop);
-
         session.connect();
-        //toast("CANT CONNECT");
-
-//----------------------コマンド
-        // SSH Channel
-      /*  ChannelExec channelssh = (ChannelExec)
-                session.openChannel("exec");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        channelssh.setOutputStream(baos);
-
-        // Execute command
-        channelssh.setCommand("python makeTable.py test.csv resulttest.csv");
-                //"mkdir /home/sit-user-16/testdata.csv");
-        channelssh.connect();
-        channelssh.disconnect();*/
-
-
-//-----------------------アップロード
-      /*  Channel channel = session.openChannel("sftp");
-        channel.connect();
-        ChannelSftp sftpChannel = (ChannelSftp) channel;
-
-        sftpChannel.put("/sdcard/11111111.csv", "/var/www/box");
-*/
-//---------------------ダウンロード
-//
-/*
-        Channel channel = session.openChannel("sftp");
-        channel.connect();
-        ChannelSftp sftpChannel = (ChannelSftp) channel;
-        try (FileOutputStream out = new FileOutputStream("/sdcard/resulttest.csv")) {
-            try (InputStream in = sftpChannel.get("resulttest.csv")) {
-                // read from in, write to out
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, len);
-                }
-            }
-        }
-        sftpChannel.exit();*/
-        // session.disconnect();
-
-
-//--------------------------------------------------------------------
         return "0";
     }
 
@@ -142,47 +86,40 @@ public class DataFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.send_data: {
+                if (counter == 0) {
+                    try {
+                        sendData();
+                    } catch (JSchException e) {
+                        e.printStackTrace();
+                    } catch (SftpException e) {
+                        e.printStackTrace();
+                    }
 
-                try {
-                    sendData();
-                } catch (JSchException e) {
-                    e.printStackTrace();
-                } catch (SftpException e) {
-                    e.printStackTrace();
+                    try {
+                        runSsh();
+                    } catch (JSchException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        //1000ミリ秒Sleepする
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
+
+                    btnsend.setBackgroundResource(R.drawable.frame_style_pressed);
+                    counter++;
                 }
-                btnsend.setBackgroundColor(Color.rgb(0,101,135));
                 break;
             }
             case R.id.get_data: {
-                try {
-                    getData();
-                } catch (JSchException e) {
-                    e.printStackTrace();
+                if (counter == 1) {
+                    try {
+                        getData();
+                    } catch (JSchException e) {
+                        e.printStackTrace();
+                    }
+                    btnget.setBackgroundResource(R.drawable.frame_style_pressed);
                 }
-                btnget.setBackgroundColor(Color.rgb(0,101,135));
-                break;
-            }
-            /*case R.id.connect_data:{
-                connect();
-                toast("CONNETED");
-                break;
-            }*/
-            case R.id.command_button:{
-
-                /*  doGet();
-                toast("AMAZON");*/
-                /*try {
-                    exec_post();
-                    toast("AMAZON");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
-                try {
-                    runSsh();
-                } catch (JSchException e) {
-                    e.printStackTrace();
-                }
-                btncommand.setBackgroundColor(Color.rgb(0,101,135));
                 break;
             }
             default:{
@@ -190,25 +127,13 @@ public class DataFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
-    public void connect(){
-        new AsyncTask<Integer, Void, Void>() {
-            @Override
-            protected Void doInBackground(Integer... params) {
-                try {
-                    executeRemoteCommand("sit-user-16", "2016mti", "130.158.80.37", 22);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute(1);
-    }
+
     public void sendData() throws JSchException, SftpException {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         ChannelSftp sftpChannel = (ChannelSftp) channel;
 
-        sftpChannel.put("/sdcard/11111111.csv", "/var/www/box");
+        sftpChannel.put("/sdcard/bb4.csv", "/var/www/box");
         sftpChannel.disconnect();
   //      session.disconnect();
     }
@@ -216,8 +141,8 @@ public class DataFragment extends Fragment implements View.OnClickListener {
         Channel channel = session.openChannel("sftp");
         channel.connect();
         ChannelSftp sftpChannel = (ChannelSftp) channel;
-        try (FileOutputStream out = new FileOutputStream("/sdcard/resulttest.csv")) {
-            try (InputStream in = sftpChannel.get("resulttest.csv")) {
+        try (FileOutputStream out = new FileOutputStream("/sdcard/bb4_result_add.csv")) {
+            try (InputStream in = sftpChannel.get("./demo/result/bb4_result_add.csv")) {
                 // read from in, write to out
                 byte[] buffer = new byte[1024];
                 int len;
@@ -244,11 +169,9 @@ public class DataFragment extends Fragment implements View.OnClickListener {
         channelssh.setOutputStream(baos);
 
         // Execute command
-        channelssh.setCommand("sh /home/sit-user-16/test.sh");
+        channelssh.setCommand("sh /home/sit-user-16/demo/code/test.sh");
         channelssh.connect();
         channelssh.disconnect();
-//        MySyncTask task = new MySyncTask(getActivity(), mReturnTextView);
-//        task.execute();
     }
 
     public void toast(String message){
@@ -260,10 +183,5 @@ public class DataFragment extends Fragment implements View.OnClickListener {
         URL url = new URL("http://130.158.80.37/phpinfo.php");
         con = (HttpURLConnection) url.openConnection();
         con.connect();
-    }
-    public void doGet()
-    {
-        myWebView.setWebViewClient(new WebViewClient());
-        myWebView.loadUrl("http://130.158.80.37/phpinfo.php?data=ok");
     }
 }

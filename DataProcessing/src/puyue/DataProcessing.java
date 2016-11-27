@@ -94,12 +94,13 @@ public static void main(String [] args) throws IOException {
 			 }
 			 
 			 
-			 
+			 int RR=int_TIME0.get(int_TIME0.size()-1)/600000+1;
 			 int m=0;
-			 int[][]  ALL = new int[int_TIME.size()][String_ID.size()];
+			 int[][]  ALL = new int[RR][String_ID.size()];
 			 //put data in ALL
-			 for (int y = 0; y < int_TIME.size(); y++) 
+			 for (int y = 0; y < RR; y++) {
 				{
+				 	if(NUM_SUM.size()>=2){
 					for (int q = NUM_SUM.get(m); q < NUM_SUM.get(m+1); q++)
 					{
 						for (int x = 0; x < String_ID.size(); x++)
@@ -108,7 +109,18 @@ public static void main(String [] args) throws IOException {
 									ALL[y][x] = 1;
 							}
 						}
-					}m++;
+					}
+				 	m++;
+				}else{
+					for(int p=0;p<NUM_SUM.get(0);p++){
+						for (int x = 0; x < String_ID.size(); x++)
+						{
+							if(int_TIME.get(p).equals(0+600000*m)&&String_ID.get(x).equals(list_ID0.get(p))){
+									ALL[y][x] = 1;
+							}
+						}}
+					}
+				}
 				}
 			 
 			
@@ -131,18 +143,21 @@ public static void main(String [] args) throws IOException {
 				}
 				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 				
-				 int[][]  TIME_add = new int[int_TIME.size()][2];
+				 int[][]  TIME_add = new int[RR][2];
 				//第一列時間を書く
 				 int nn=0;
-				 for(int i=0;i<int_TIME.size();i++){
+				 for(int i=0;i<RR;i++){
 					 TIME_add[i][0]=0+600000*nn;
 					 nn++;
 				 }
 				 //第2列
-				 for(int i=0;i<int_TIME.size();i++){
+				 int ss=0;
+				 for(int i=0;i<RR;i++){
 					 for(int j=0;j<String_ID.size();j++){
-						 TIME_add[i][1]=ALL[i][j]+TIME_add[i][1];
+						 ss+=ALL[i][j];
+						 System.out.print( "ss="+ss+ "	");
 					 }
+					 TIME_add[i][1]=ss;
 				 }
 				//print TIME_add
 					for (int i = 0; i < TIME_add.length; i++)
@@ -156,16 +171,16 @@ public static void main(String [] args) throws IOException {
 
 					}
 					System.out.println("##########################");
-				 int[][]  TIME_change = new int[int_TIME.size()][2];
+				 int[][]  TIME_change = new int[RR][2];
 				//第一列時間を書く
 				 int pp=0;
-				 for(int i=0;i<int_TIME.size();i++){
+				 for(int i=0;i<RR;i++){
 					 TIME_change[i][0]=0+600000*pp;
 					 pp++;
 				 }
 				//第2列
 				TIME_change[0][1]=0;
-				 for(int i=1;i<int_TIME.size();i++){
+				 for(int i=1;i<RR;i++){
 					 for(int j=0;j<String_ID.size();j++){
 						 TIME_change[i][1]=Math.abs(ALL[i-1][j]-ALL[i][j])+TIME_change[i][1];
 					 }

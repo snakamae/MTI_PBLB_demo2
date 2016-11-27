@@ -103,7 +103,7 @@
 
                         <TextView
                             android:id="@+id/item_tv2"
-                            android:text="未定"
+                            android:text="日付"
                             android:textSize="20sp"
                             android:paddingLeft="5dp"
                             android:paddingTop="5dp"

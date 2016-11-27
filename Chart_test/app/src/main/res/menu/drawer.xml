@@ -13,7 +13,7 @@
             android:title="@string/navigation_tomo" />
         <item
             android:id="@+id/navigation_item_shuta"
-            android:icon="@drawable/shuta"
-            android:title="しゅしゅしゅしゅしゅたさん" />
+            android:icon="@drawable/data"
+            android:title="@string/navigation_shuta" />
     </group>
 </menu>

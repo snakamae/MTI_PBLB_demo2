@@ -171,7 +171,7 @@ public class HitoriFragment extends Fragment {
     }
 
     private void SetList(){
-        String[] csv = {"csv1","csv2","csv3","csv4"};
+        String[] csv = {"2016/11/25","2016/11/26","2016/11/27","2016/11/28"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,csv);
         listView.setAdapter(adapter);
 
@@ -196,7 +196,7 @@ public class HitoriFragment extends Fragment {
                         loadLineChartData(mLineChart);
                         break;
                     case 3:
-                        CSV = "result.csv";
+                        CSV = "resulttest.csv";
                         loadLineChartData(mLineChart);
                         break;
                 }

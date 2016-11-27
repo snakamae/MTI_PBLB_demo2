@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchToShuta() {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ShutaFragment()).commit();
-        mToolbar.setTitle("Shuta");
+        mToolbar.setTitle("データ");
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

@@ -82,16 +82,20 @@ public class HitoriFragment extends Fragment {
         }
 
         for (int i = 1; i < TIME.size()-1; i++) {
-            if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i - 1)) != 0) {
+            if (Integer.parseInt(NUM.get(i + 1)) != 0 && Integer.parseInt(NUM.get(i - 1)) != 0 && Integer.parseInt(NUM.get(i)) == 0){
+
+            }
+            else if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i - 1)) != 0) {
                 start.add(TIME.get(i));
-            } else if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i + 1)) != 0) {
+            }
+            else if (Integer.parseInt(NUM.get(i)) == 0 && Integer.parseInt(NUM.get(i + 1)) != 0) {
                 end.add(TIME.get(i));
             }
         }
 
                 mTextView.setText("");
         for (int i = 0; i < start.size(); i++){
-                mTextView.append("今日の"+ start.get(i) +"から"+end.get(i)+"までは一人でしたよ\n");
+                mTextView.append(start.get(i) +"から"+end.get(i)+"までは一人でしたよ\n");
             }
 
 
@@ -191,7 +195,8 @@ public class HitoriFragment extends Fragment {
                         loadLineChartData(mLineChart);
                         break;
                     case 3:
-                        CSV = "bb4_result_add.csv";
+                            CSV = "bb4_result_add.csv";
+                       //   CSV = "csv4.csv";
                         loadLineChartData(mLineChart);
                         break;
                 }

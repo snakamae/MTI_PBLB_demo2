@@ -176,7 +176,7 @@ public class TomoFragment extends Fragment {
                 TIME_change[i][1]=Math.abs(ALL[i-1][j]-ALL[i][j])+TIME_change[i][1];
             }
         }
-        
+
         //导出
         int i,j;
         try

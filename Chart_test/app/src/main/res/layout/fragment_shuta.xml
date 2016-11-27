@@ -5,30 +5,35 @@
     android:weightSum="1">
 
     <Button
-        android:text="Connect"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/connect_data"
-        android:layout_weight="0.16" />
-
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Send Data"
         android:id="@+id/send_data"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.30" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Command"
+        android:id="@+id/command_button"
+        android:layout_weight="0.28" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GET DATA"
         android:id="@+id/get_data"
-        android:layout_weight="0.13" />
+        android:layout_weight="0.24" />
 
-    <Button
-        android:text="Disconnect"
+    <TextView
+        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/kill_data"
-        android:layout_weight="0.17" />
+        android:id="@+id/textView"
+        android:layout_weight="0.16" />
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:id="@+id/web_view" />
 </LinearLayout>
